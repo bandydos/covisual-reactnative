@@ -5,9 +5,11 @@ import FetchAndDisplay from './src/components/FetchAndDisplay';
 
 export default function App() {
   return (
-    <ScrollView>
-      <FetchAndDisplay scope="total"></FetchAndDisplay>
-    </ScrollView>
+    <View style={styles.container, styles.mt}>
+      <ScrollView>
+        <FetchAndDisplay scope="total"></FetchAndDisplay>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -18,4 +20,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  mt: {
+    marginTop: 32 
+  }
 });
