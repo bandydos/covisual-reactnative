@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import RecordsTable from './RecordsTable';
+import stateOptions from '../data/stateOptions';
 
 export class FetchAndDisplay extends Component {
     constructor(props) {
@@ -80,6 +82,17 @@ export class FetchAndDisplay extends Component {
         }, await this.fetchRecords) // Callback to fetchRecords.
     }
 
+    fillPicker = () => {
+        const pickerOptions = [];
+        for (let i = 0; i < stateOptions.length; i++) {
+            pickerOptions.push(
+                <Picker.Item key={i} label={stateOptions[i].label} value={stateOptions[i].value}></Picker.Item>
+            )
+
+        }
+        return pickerOptions;
+    }
+
     render() {
         // If loading return loadscreen.
         if (this.state.loading) {
@@ -99,11 +112,14 @@ export class FetchAndDisplay extends Component {
                     {this.props.scope === 'state' ? (
                         <View>
                             <View>
-                                <Select
-                                    placeholder="Select state"
-                                    options={['this', 'that']} // Give options.
-                                    onChange={this.handleChange}
-                                ></Select>
+                                <Picker
+                                    selectedValue={this.state.language}
+                                    style={{ height: 50, width: 100 }}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        this.setState({ language: itemValue })
+                                    }>
+                                        {this.fillPicker()}
+                                </Picker>
                             </View>
                         </View>
                     ) : (
