@@ -6,9 +6,9 @@ import FetchAndDisplay from './src/components/FetchAndDisplay';
 export default function App() {
   return (
     <View style={styles.container, styles.mt}>
-      <Text>test</Text>
+      <Text>tcestqsdf</Text>
       <ScrollView>
-        <FetchAndDisplay scope="total"></FetchAndDisplay>
+        <FetchAndDisplay scope="state"></FetchAndDisplay>
       </ScrollView>
     </View>
   );
