@@ -93,6 +93,13 @@ export class FetchAndDisplay extends Component {
         return pickerOptions;
     }
 
+    handleValueChange = (itemValue, itemIndex) => {
+        this.setState({
+            val: itemValue,
+            lbl: stateOptions[itemIndex].label
+        }, this.fetchRecords)
+    }
+
     render() {
         // If loading return loadscreen.
         if (this.state.loading) {
@@ -113,12 +120,10 @@ export class FetchAndDisplay extends Component {
                         <View>
                             <View>
                                 <Picker
-                                    selectedValue={this.state.language}
-                                    style={{ height: 50, width: 100 }}
-                                    onValueChange={(itemValue, itemIndex) =>
-                                        this.setState({ language: itemValue })
-                                    }>
-                                        {this.fillPicker()}
+                                    selectedValue={this.state.val}
+                                    style={{ height: 50, width: 200 }}
+                                    onValueChange={(iVal, iIndex) => this.handleValueChange(iVal, iIndex)}>
+                                    {this.fillPicker()}
                                 </Picker>
                             </View>
                         </View>
