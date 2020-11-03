@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import RecordsTable from './RecordsTable';
 import stateOptions from '../data/stateOptions';
+import RecordsChart from './RecordsChart';
 
 export class FetchAndDisplay extends Component {
     constructor(props) {
@@ -83,14 +84,13 @@ export class FetchAndDisplay extends Component {
     }
 
     fillPicker = () => {
-        const pickerOptions = [];
+        const pickerItems = [];
         for (let i = 0; i < stateOptions.length; i++) {
-            pickerOptions.push(
+            pickerItems.push(
                 <Picker.Item key={i} label={stateOptions[i].label} value={stateOptions[i].value}></Picker.Item>
             )
-
         }
-        return pickerOptions;
+        return pickerItems;
     }
 
     handleValueChange = (itemValue, itemIndex) => {
@@ -142,6 +142,7 @@ export class FetchAndDisplay extends Component {
                             }
                         </View>
                     </View>
+                    <RecordsChart rcrds={this.state.records} lbl={this.state.lbl}></RecordsChart>
                     <View>
                         <View>
                             {this.props.scope === 'state' ? (
