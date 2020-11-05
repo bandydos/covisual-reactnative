@@ -12,14 +12,14 @@ export class FetchAndDisplay extends Component {
         this.state = {
             loading: true,
             records: [],
-            val: 'ny', // Initial fetch for ny.
-            lbl: 'New York'
+            val: 'al', // Initial fetch for al.
+            lbl: 'Alabama'
         }
     }
 
-    // Function to clean date format (yyyymmdd to dd-mm-yyyy).
+    // Function to clean date format (yyyymmdd to dd-mm).
     cleanupDate(d) {
-        return d.slice(6) + '/' + d.slice(4, 6) + '/' + d.slice(0, 4);
+        return d.slice(6) + '/' + d.slice(4, 6);
     }
 
     // Fetch records.

@@ -2,14 +2,17 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import FetchAndDisplay from './src/components/FetchAndDisplay';
+import Header from './src/components/Header';
+
 
 export default function App() {
   return (
-    <View style={styles.container, styles.mt}>
-      <ScrollView>
+    <ScrollView>
+      <View style={styles.container, styles.mt}>
+        <Header></Header>
         <FetchAndDisplay scope="state"></FetchAndDisplay>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -21,6 +24,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mt: {
-    marginTop: 32 
+    marginTop: 32
   }
 });
