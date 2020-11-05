@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, ScrollView, Text, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import RecordsTable from './RecordsTable';
 import stateOptions from '../data/stateOptions';
@@ -27,14 +27,7 @@ export class FetchAndDisplay extends Component {
         let response;
 
         // Check props for location scope (total US or single state).
-        if (this.props.scope === 'total') {
-            response = await fetch("https://api.covidtracking.com/v1/us/daily.json");
-        } else if (this.props.scope === 'state') {
-            response = await fetch(`https://api.covidtracking.com/v1/states/${this.state.val}/daily.json`);
-        } else {
-            alert('Something went wrong.');
-        }
-
+        response = await fetch(`https://api.covidtracking.com/v1/states/${this.state.val}/daily.json`);
         const jsonresponse = await response.json(); // Await as json.
 
         const recs = []; // Records array.
@@ -60,27 +53,10 @@ export class FetchAndDisplay extends Component {
         }
     }
 
-    // If props change when rendering component.
-    componentDidUpdate = async (prevProps) => {
-        // Compare previous props to this.props.
-        if (prevProps.scope !== this.props.scope) {
-            await this.fetchRecords(); // Fetch records if changed.
-        }
-    }
-
     // If component rendered.
     componentDidMount = async () => {
         // Await fetch and rerender.
         await this.fetchRecords();
-    }
-
-    // Handle select onChange (don't setState directly in render method).
-    handleChange = async (event) => {
-        this.setState({
-            loading: true, // Loading new data.
-            val: event.value,
-            lbl: event.label
-        }, await this.fetchRecords) // Callback to fetchRecords.
     }
 
     fillPicker = () => {
@@ -95,6 +71,7 @@ export class FetchAndDisplay extends Component {
 
     handleValueChange = (itemValue, itemIndex) => {
         this.setState({
+            loading: true,
             val: itemValue,
             lbl: stateOptions[itemIndex].label
         }, this.fetchRecords)
@@ -110,51 +87,33 @@ export class FetchAndDisplay extends Component {
             )
         }
 
-        const NUM_RECORDS = 50; // Number of records (to display in table).
+        const NUM_CHARTRECORDS = 5;
+        const NUM_TABLERECORDS = 50; // Number of records (to display in table).
 
         // JSX to return on render.
         return (
-            <View>
+            <ScrollView>
                 <View>
-                    {this.props.scope === 'state' ? (
-                        <View>
-                            <View>
-                                <Picker
-                                    selectedValue={this.state.val}
-                                    style={{ height: 50, width: 200 }}
-                                    onValueChange={(iVal, iIndex) => this.handleValueChange(iVal, iIndex)}>
-                                    {this.fillPicker()}
-                                </Picker>
-                            </View>
-                        </View>
-                    ) : (
-                            <View></View>
-                        )}
+                    <Picker
+                        selectedValue={this.state.val}
+                        style={{ height: 50, width: Dimensions.get("window").width - 40 }}
+                        onValueChange={(iVal, iIndex) => this.handleValueChange(iVal, iIndex)}>
+                        {this.fillPicker()}
+                    </Picker>
                 </View>
                 <View>
                     <View>
-                        <View>
-                            {this.props.scope === 'state' ? (
-                                <Text>Covid-19 death records for {this.state.lbl}</Text>
-                            ) : (
-                                    <Text>Covid-19 death records for all states</Text>
-                                )
-                            }
-                        </View>
+                        <Text>Covid-19 death records for {this.state.lbl} (last {NUM_CHARTRECORDS} days)</Text>
+                        <RecordsChart rcrds={this.state.records} num_rcrds={NUM_CHARTRECORDS}></RecordsChart>
                     </View>
-                    <RecordsChart rcrds={this.state.records} lbl={this.state.lbl}></RecordsChart>
-                    <View>
-                        <View>
-                            {this.props.scope === 'state' ? (
-                                <Text>Last {NUM_RECORDS} day details table ({this.state.lbl})</Text>
-                            ) : (
-                                    <Text>Last {NUM_RECORDS} day details table (all states)</Text>
-                                )}
+                    <View style={{ marginTop: 20 }}>
+                        <Text>Last {NUM_TABLERECORDS} day details table ({this.state.lbl})</Text>
+                        <View style={{ marginTop: 8 }}>
+                            <RecordsTable rcrds={this.state.records} num_rcrds={NUM_TABLERECORDS}></RecordsTable>
                         </View>
-                        <RecordsTable rcrds={this.state.records} num_rcrds={NUM_RECORDS}></RecordsTable>
                     </View>
                 </View>
-            </View>
+            </ScrollView>
         )
     }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
+import { View } from 'react-native';
+import { Table, Row, Rows } from 'react-native-table-component';
 
 export class RecordsTable extends Component {
     render() {
@@ -18,14 +18,10 @@ export class RecordsTable extends Component {
         // JSX to return on render.
         return (
             <View>
-                <View>
-                    <View>
-                        <Table>
-                            <Row data={tableHead} />
-                            <Rows data={tableData} />
-                        </Table>
-                    </View>
-                </View>
+                <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
+                    <Row data={tableHead} style={{ height: 40, backgroundColor: '#f1f8ff' }} />
+                    <Rows data={tableData} />
+                </Table>
             </View>
         )
     }

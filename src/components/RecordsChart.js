@@ -5,16 +5,15 @@ import { LineChart } from 'react-native-chart-kit';
 
 export class RecordsChart extends Component {
     render() {
-        const { rcrds } = this.props; // Destructure rcrds from props.
+        const { rcrds, num_rcrds } = this.props; // Destructure rcrds from props.
 
         // X and Y labels for chart.
         const xdates = [];
         const ydeathstoday = [];
         const ydeathstotal = [];
 
-        const num_records = 5;
         // Loop inverted.
-        for (let i = num_records; i >= 0; i--) {
+        for (let i = num_rcrds; i >= 0; i--) {
             // Start pushing from first death.
             if (rcrds[i].deathstotal > 0) {
                 xdates.push(rcrds[i].date);
@@ -34,7 +33,7 @@ export class RecordsChart extends Component {
                             }
                         ]
                     }}
-                    width={Dimensions.get("window").width} // from react-native
+                    width={Dimensions.get("window").width - 40} // from react-native
                     height={220}
                     chartConfig={{
                         backgroundColor: "#e26a00",
@@ -68,7 +67,7 @@ export class RecordsChart extends Component {
                             }
                         ]
                     }}
-                    width={Dimensions.get("window").width} // from react-native
+                    width={Dimensions.get("window").width - 40} // from react-native
                     height={220}
                     chartConfig={{
                         backgroundColor: "#e26a00",
