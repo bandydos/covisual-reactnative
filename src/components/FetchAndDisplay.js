@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import RecordsTable from './RecordsTable';
 import stateOptions from '../data/stateOptions';
+import RecordsChart from './RecordsChart';
 
 export class FetchAndDisplay extends Component {
     constructor(props) {
@@ -11,14 +12,14 @@ export class FetchAndDisplay extends Component {
         this.state = {
             loading: true,
             records: [],
-            val: 'ny', // Initial fetch for ny.
-            lbl: 'New York'
+            val: 'al', // Initial fetch for al.
+            lbl: 'Alabama'
         }
     }
 
-    // Function to clean date format (yyyymmdd to dd-mm-yyyy).
+    // Function to clean date format (yyyymmdd to dd-mm).
     cleanupDate(d) {
-        return d.slice(6) + '/' + d.slice(4, 6) + '/' + d.slice(0, 4);
+        return d.slice(6) + '/' + d.slice(4, 6);
     }
 
     // Fetch records.
@@ -83,14 +84,13 @@ export class FetchAndDisplay extends Component {
     }
 
     fillPicker = () => {
-        const pickerOptions = [];
+        const pickerItems = [];
         for (let i = 0; i < stateOptions.length; i++) {
-            pickerOptions.push(
+            pickerItems.push(
                 <Picker.Item key={i} label={stateOptions[i].label} value={stateOptions[i].value}></Picker.Item>
             )
-
         }
-        return pickerOptions;
+        return pickerItems;
     }
 
     handleValueChange = (itemValue, itemIndex) => {
@@ -142,6 +142,7 @@ export class FetchAndDisplay extends Component {
                             }
                         </View>
                     </View>
+                    <RecordsChart rcrds={this.state.records} lbl={this.state.lbl}></RecordsChart>
                     <View>
                         <View>
                             {this.props.scope === 'state' ? (
