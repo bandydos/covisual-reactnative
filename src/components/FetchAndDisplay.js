@@ -32,10 +32,8 @@ export class FetchAndDisplay extends Component {
 
     // Fetch records.
     fetchRecords = async () => {
-        let response;
-
         // Check props for location scope (total US or single state).
-        response = await fetch(`https://api.covidtracking.com/v1/states/${this.state.val}/daily.json`);
+        const response = await fetch(`https://api.covidtracking.com/v1/states/${this.state.val}/daily.json`);
         const jsonresponse = await response.json(); // Await as json.
 
         const recs = []; // Records array.
@@ -55,8 +53,7 @@ export class FetchAndDisplay extends Component {
                     'deathstotal': jsonresponse[i].death
                 });
             }
-
-            // Loop inverted.
+            // Loop inverted for chart.
             for (let i = this.constvals.num_chartrecords; i >= 0; i--) {
                 // Start pushing from first death.
                 if (recs[i].deathstotal > 0) {
@@ -65,7 +62,7 @@ export class FetchAndDisplay extends Component {
                     ydtots.push(recs[i].deathstotal);
                 }
             }
-            // Set state (loading => loaded and fill up records).
+            // Set state (loading => loaded and fill up records and xs and ys).
             this.setState({
                 loading: false,
                 records: recs,
@@ -85,6 +82,7 @@ export class FetchAndDisplay extends Component {
         await this.fetchRecords();
     }
 
+    // Fill picker with options (items).
     fillPicker = () => {
         const pickerItems = [];
         for (let i = 0; i < stateOptions.length; i++) {
@@ -95,12 +93,13 @@ export class FetchAndDisplay extends Component {
         return pickerItems;
     }
 
+    // Handle picker valueChange.
     handleValueChange = (itemValue, itemIndex) => {
         this.setState({
-            loading: true,
+            loading: true, // Restart loading and fill vals.
             val: itemValue,
             lbl: stateOptions[itemIndex].label
-        }, this.fetchRecords)
+        }, this.fetchRecords) // Callback fetch.
     }
 
     render() {
@@ -113,13 +112,10 @@ export class FetchAndDisplay extends Component {
             )
         }
 
-        const NUM_CHARTRECORDS = 5;
-        const NUM_TABLERECORDS = 50; // Number of records (to display in table).
-
         // JSX to return on render.
         return (
             <ScrollView>
-                <View>
+                <View style={{ alignItems: "center" }}>
                     <Picker
                         selectedValue={this.state.val}
                         style={{ height: 50, width: Dimensions.get("window").width - 40 }}
@@ -127,18 +123,16 @@ export class FetchAndDisplay extends Component {
                         {this.fillPicker()}
                     </Picker>
                 </View>
-                <View>
-                    <View>
-                        <Text>Covid-19 death records for {this.state.lbl} (last {NUM_CHARTRECORDS} days)</Text>
-                        {/*<RecordsChart rcrds={this.state.records} num_rcrds={this.constvals.num_chartrecords}></RecordsChart>*/}
-                        <RecordsChart xs={this.state.xdates} ys={this.state.ydeathstotal}></RecordsChart>
-                        <RecordsChart xs={this.state.xdates} ys={this.state.ydeathstoday}></RecordsChart>
-                    </View>
-                    <View style={{ marginTop: 20 }}>
-                        <Text>Last {NUM_TABLERECORDS} day details table ({this.state.lbl})</Text>
-                        <View style={{ marginTop: 8 }}>
-                            <RecordsTable rcrds={this.state.records} num_rcrds={NUM_TABLERECORDS}></RecordsTable>
-                        </View>
+                <View style={{ marginTop: 12 }}>
+                    <Text>Covid-19 death records for {this.state.lbl} (last {this.constvals.num_chartrecords} days)</Text>
+                    <RecordsChart xs={this.state.xdates} ys={this.state.ydeathstotal}></RecordsChart>
+                    <Text>Deaths / day</Text>
+                    <RecordsChart xs={this.state.xdates} ys={this.state.ydeathstoday}></RecordsChart>
+                </View>
+                <View style={{ marginTop: 20 }}>
+                    <Text>Last {this.constvals.num_tablerecords} day details table ({this.state.lbl})</Text>
+                    <View style={{ marginTop: 8 }}>
+                        <RecordsTable rcrds={this.state.records} num_rcrds={this.constvals.num_tablerecords}></RecordsTable>
                     </View>
                 </View>
             </ScrollView>

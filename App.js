@@ -1,9 +1,7 @@
 import React from 'react';
 import { AppLoading } from 'expo';
-import { StyleSheet } from 'react-native';
 import FetchAndDisplay from './src/components/FetchAndDisplay';
-import { Body, Button, Container, Content, Footer, FooterTab, Header, Title } from 'native-base';
-import { Switch, Link, NativeRouter, Route } from 'react-router-native';
+import { Body, Container, Content, Header, Title } from 'native-base';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -25,13 +23,6 @@ export default class App extends React.Component {
   }
 
   render() {
-
-    const style = StyleSheet.create({
-      m: {
-        margin: 20
-      }
-    })
-
     if (!this.state.isReady) {
       return <AppLoading />;
     }
@@ -40,10 +31,10 @@ export default class App extends React.Component {
       <Container>
         <Header>
           <Body>
-            <Title>Covisual</Title>
+            <Title style={{ marginLeft: 10 }}>Covisual</Title>
           </Body>
         </Header>
-        <Content style={style.m}>
+        <Content style={{ margin: 20 }}>
           <FetchAndDisplay></FetchAndDisplay>
         </Content>
       </Container>
