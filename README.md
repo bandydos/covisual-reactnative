@@ -11,8 +11,7 @@ Create a React application that gives info about Covid-19 using an API.
 ## TODO
 
 * [X] Initialize React native app
-* [ ] Clean up code 
+* [X] Clean up code 
 * [X] Research on usefull API's
-* [ ] Visualize in chart
-* [ ] Use CSS lib
-* [ ] Rework file structure (seperation of concern, using more seperate components)
+* [X] Visualize in chart
+* [X] Rework file structure (seperation of concern, using more seperate components)
