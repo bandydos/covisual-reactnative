@@ -1,5 +1,5 @@
 import { View } from 'native-base';
-import { Dimensions, Text } from 'react-native';
+import { Dimensions } from 'react-native';
 import React, { Component } from 'react'
 import { LineChart } from 'react-native-chart-kit';
 
